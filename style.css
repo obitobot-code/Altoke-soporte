@@ -121,12 +121,13 @@ body {
     font-weight: 500;
 }
 
-/* Diseño inferior con fondo.png */
+/* Diseño inferior con fondo.webp */
 .bottom-shape {
     width: 100%;
     height: 32%; 
     min-height: 220px;
-    background: url('fondo.png') no-repeat center bottom;
+    /* OPTIMIZACIÓN: Cambio a .webp */
+    background: url('fondo.webp') no-repeat center bottom;
     background-size: 100% 100%; 
     display: flex;
     flex-direction: column;
