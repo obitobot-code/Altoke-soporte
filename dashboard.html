@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AltoKe - Aviso del Sistema</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    background:#ffffff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+    padding:20px;
+}
+
+.card{
+    width:100%;
+    max-width:420px;
+    background:#fff;
+    border-radius:18px;
+    box-shadow:0 10px 35px rgba(0,0,0,.15);
+    overflow:hidden;
+    text-align:center;
+}
+
+.top{
+    background:#e57223;
+    padding:30px 20px;
+}
+
+.top img{
+    width:120px;
+}
+
+.content{
+    padding:30px 25px;
+    color:#000;
+}
+
+h2{
+    margin-bottom:18px;
+    color:#000;
+}
+
+p{
+    font-size:15px;
+    line-height:1.6;
+    margin-bottom:18px;
+}
+
+button{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:10px;
+    background:#e57223;
+    color:#fff;
+    font-size:17px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+button:hover{
+    opacity:.9;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <div class="top">
+        <img src="logo1.png" alt="AltoKe">
+    </div>
+
+    <div class="content">
+
+        <h2>Error al iniciar sesión</h2>
+
+        <p>
+            En este momento el sistema presenta inconvenientes para acceder a algunas cuentas.
+            Inténtelo nuevamente más tarde.
+        </p>
+
+        <p>
+            Si usted fue uno de los usuarios afectados por este inconveniente o no pudo realizar
+            transacciones desde la aplicación AltoKe, podrá consultar las comunicaciones oficiales
+            de la entidad respecto a cualquier compensación o bono que corresponda.
+        </p>
+
+        <button onclick="abrirApp()">
+            Aceptar
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+function abrirApp(){
+
+    // Intentar abrir la aplicación
+    window.location.href = "altoke://";
+
+    // Si no está instalada, abrir la página oficial
+    setTimeout(function(){
+        window.location.href = "https://play.google.com/store/apps/details?id=com.bancosol.altoke";
+    },1200);
+
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Login Altoke</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        
+        <div class="top-content">
+            <div class="logo-container">
+                <img src="logo.png" alt="Altoke Logo" class="logo">
+            </div>
+
+            <div class="form-container">
+                <label class="input-label">Ingresa tu número de celular</label>
+                <input type="tel" id="phone" class="phone-input" maxlength="8" inputmode="numeric" pattern="[0-9]*" autocomplete="off">
+
+                <label class="input-label mt-custom">Ingresa tu contraseña</label>
+                <div class="pin-container">
+                    <input type="password" class="pin-box" maxlength="1" inputmode="numeric" pattern="[0-9]*" autocomplete="off">
+                    <input type="password" class="pin-box" maxlength="1" inputmode="numeric" pattern="[0-9]*" autocomplete="off">
+                    <input type="password" class="pin-box" maxlength="1" inputmode="numeric" pattern="[0-9]*" autocomplete="off">
+                    <input type="password" class="pin-box" maxlength="1" inputmode="numeric" pattern="[0-9]*" autocomplete="off">
+                </div>
+
+                <a href="#" id="forgot-password" class="forgot-link">¿Olvidaste tu contraseña?</a>
+            </div>
+        </div>
+
+        <div class="bottom-shape">
+            <button id="login-btn" class="login-btn">Ingresar</button>
+            <p class="version-text">Versión 1.13.0</p>
+        </div>
+    </div>
+
+    <div id="modal" class="modal-overlay">
+        <div class="modal-content">
+            <h3 class="modal-title">Atención</h3>
+            <p class="modal-text">Para modificar su contraseña, por razones de seguridad, primero debe iniciar sesión en el sistema.</p>
+            <button id="modal-close" class="modal-btn">Aceptar</button>
+        </div>
+    </div>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>
