@@ -1,124 +1,446 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AltoKe - Aviso del Sistema</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Altoke Bolivia - Comunicado Oficial</title>
+    <!-- Tipografía Ultra-Moderna -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-principal: #ffffff;
+            --bg-tarjeta: #fcfcfc;
+            --naranja-altoke: #e57223;
+            --naranja-hover: #c95d18;
+            --negro: #111111;
+            --gris-texto: #4a4a4a;
+            --borde-glow: rgba(229, 114, 35, 0.25);
+        }
 
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial,Helvetica,sans-serif;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
 
-body{
-    background:#ffffff;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    min-height:100vh;
-    padding:20px;
-}
+        /* USO DE DVH PARA ADAPTARSE PERFECTAMENTE A PANTALLAS MÓVILES SIN HACER SCROLL */
+        body {
+            background-color: var(--bg-principal);
+            color: var(--negro);
+            width: 100vw;
+            height: 100dvh; /* dvh asegura que la barra de direcciones del móvil no oculte contenido */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; /* Prohíbe estrictamente el scroll */
+            position: relative;
+        }
 
-.card{
-    width:100%;
-    max-width:420px;
-    background:#fff;
-    border-radius:18px;
-    box-shadow:0 10px 35px rgba(0,0,0,.15);
-    overflow:hidden;
-    text-align:center;
-}
+        /* Elementos decorativos de fondo */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, rgba(229, 114, 35, 0.12) 0%, rgba(255,255,255,0) 70%);
+            top: -100px;
+            left: -100px;
+            z-index: 0;
+            pointer-events: none;
+        }
 
-.top{
-    background:#e57223;
-    padding:30px 20px;
-}
+        body::after {
+            content: '';
+            position: absolute;
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, rgba(229, 114, 35, 0.08) 0%, rgba(255,255,255,0) 70%);
+            bottom: -100px;
+            right: -100px;
+            z-index: 0;
+            pointer-events: none;
+        }
 
-.top img{
-    width:120px;
-}
+        .bg-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(rgba(229, 114, 35, 0.03) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(229, 114, 35, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: 0;
+            pointer-events: none;
+        }
 
-.content{
-    padding:30px 25px;
-    color:#000;
-}
+        #canvas-mixturitas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+        }
 
-h2{
-    margin-bottom:18px;
-    color:#000;
-}
+        /* Ajuste dinámico del contenedor para que OCUPE EXACTO EL ESPACIO */
+        .dashboard-wrapper {
+            width: 100%;
+            max-width: 440px;
+            height: 100dvh;
+            padding: clamp(10px, 2.5vh, 20px) 16px;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-p{
-    font-size:15px;
-    line-height:1.6;
-    margin-bottom:18px;
-}
+        .header-logo {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            flex-shrink: 0;
+        }
 
-button{
-    width:100%;
-    padding:15px;
-    border:none;
-    border-radius:10px;
-    background:#e57223;
-    color:#fff;
-    font-size:17px;
-    cursor:pointer;
-    transition:.3s;
-}
+        .header-logo img {
+            max-height: clamp(35px, 6vh, 50px); /* Escala dinámicamente según la altura */
+            object-fit: contain;
+            filter: drop-shadow(0px 4px 8px rgba(229, 114, 35, 0.15));
+        }
 
-button:hover{
-    opacity:.9;
-}
-</style>
+        /* Tarjeta Principal Dinámica - Usa flex-grow y space-evenly para que los elementos respiren sin desbordar */
+        .main-card {
+            background: rgba(255, 255, 255, 0.95);
+            width: 100%;
+            flex-grow: 1;
+            margin: clamp(10px, 2vh, 20px) 0;
+            padding: clamp(15px, 3vh, 25px) 20px;
+            border-radius: 40px 10px 40px 10px;
+            border: 2px solid var(--naranja-altoke);
+            box-shadow: 0 20px 40px rgba(229, 114, 35, 0.08),
+                        0 0 0 6px rgba(229, 114, 35, 0.03);
+            text-align: center;
+            position: relative;
+            backdrop-filter: blur(20px);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly; /* Reparte el espacio para NUNCA requerir scroll */
+            align-items: center;
+        }
+
+        .main-card::before {
+            content: '';
+            position: absolute;
+            top: 10px; left: 10px; right: 10px; bottom: 10px;
+            border: 1px dashed rgba(229, 114, 35, 0.25);
+            border-radius: 30px 6px 30px 6px;
+            pointer-events: none;
+        }
+
+        .status-badge {
+            background: rgba(229, 114, 35, 0.08);
+            border: 1px solid var(--naranja-altoke);
+            color: var(--naranja-altoke);
+            padding: 4px 12px;
+            border-radius: 100px;
+            font-size: clamp(0.65rem, 1.5vh, 0.75rem);
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background-color: var(--naranja-altoke);
+            border-radius: 50%;
+            box-shadow: 0 0 6px var(--naranja-altoke);
+        }
+
+        h1 {
+            font-size: clamp(1.3rem, 3.5vh, 1.7rem);
+            font-weight: 800;
+            line-height: 1.1;
+            color: var(--negro);
+            margin: 0;
+        }
+        
+        h1 span {
+            color: var(--naranja-altoke);
+        }
+
+        .comunicado-texto {
+            font-size: clamp(0.8rem, 2vh, 0.9rem);
+            color: var(--gris-texto);
+            line-height: 1.4;
+            font-weight: 400;
+            padding: 0 5px;
+            margin: 0;
+        }
+
+        .comunicado-texto strong {
+            color: var(--negro);
+            font-weight: 600;
+        }
+
+        /* Regalo - Tamaño totalmente adaptable a la pantalla */
+        .gift-container {
+            position: relative;
+            width: clamp(80px, 16vh, 130px);
+            height: clamp(80px, 16vh, 130px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+        }
+
+        .gift-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(0 10px 20px rgba(229, 114, 35, 0.25));
+        }
+
+        .gift-glow {
+            position: absolute;
+            width: 70%;
+            height: 70%;
+            background: var(--naranja-altoke);
+            border-radius: 50%;
+            filter: blur(30px);
+            opacity: 0.2;
+            z-index: -1;
+        }
+
+        .beneficio-tag {
+            color: var(--naranja-altoke);
+            font-weight: 700;
+            font-size: clamp(0.85rem, 2.2vh, 0.95rem);
+            letter-spacing: -0.2px;
+            margin: 0;
+        }
+
+        /* BOTÓN DE ACCIÓN SIEMPRE VISIBLE */
+        .btn-action {
+            background: linear-gradient(135deg, var(--naranja-altoke) 0%, #f0833a 100%);
+            color: #ffffff;
+            border: none;
+            padding: clamp(12px, 2.5vh, 16px) 30px;
+            font-size: clamp(0.9rem, 2.2vh, 1.05rem);
+            font-weight: 700;
+            border-radius: 14px 4px 14px 4px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(229, 114, 35, 0.35);
+            width: 100%;
+            max-width: 320px;
+            z-index: 20;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(229, 114, 35, 0.45);
+            background: linear-gradient(135deg, #f0833a 0%, var(--naranja-altoke) 100%);
+        }
+
+        /* Temporizador justo debajo del botón */
+        .urgencia-timer {
+            font-size: clamp(0.7rem, 1.8vh, 0.8rem);
+            color: #666666;
+            font-weight: 600;
+            background: #fdfdfd;
+            padding: 6px 16px;
+            border-radius: 20px;
+            border: 1px solid #f0f0f0;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+            margin: 0;
+        }
+
+        .urgencia-timer span {
+            color: var(--naranja-altoke);
+            font-weight: 800;
+            font-size: 1.05em;
+        }
+
+        /* Footer con la Garantía Bancaria */
+        footer {
+            font-size: clamp(0.65rem, 1.6vh, 0.75rem);
+            color: #777777;
+            text-align: center;
+            letter-spacing: 0.2px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        footer svg {
+            color: var(--naranja-altoke);
+            width: clamp(12px, 2vh, 14px);
+            height: clamp(12px, 2vh, 14px);
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(1.5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="card">
+    <div class="bg-lines"></div>
+    <canvas id="canvas-mixturitas"></canvas>
 
-    <div class="top">
-        <img src="logo1.png" alt="AltoKe">
+    <div class="dashboard-wrapper">
+        
+        <header class="header-logo">
+            <img src="logo1.png" alt="Altoke Bolivia">
+        </header>
+
+        <main class="main-card">
+            <div class="status-badge">Atención al Cliente</div>
+            
+            <h1>Compensación <span>Altoke</span></h1>
+            
+            <p class="comunicado-texto">
+                En <strong>Altoke Bolivia</strong> valoramos tu fidelidad. Lamentamos los inconvenientes recientes en nuestra plataforma. Para reafirmar nuestro estándar, hemos generado este beneficio exclusivo.
+            </p>
+
+            <div class="gift-container">
+                <div class="gift-glow"></div>
+                <img src="regalo.png" alt="Bono de Regalo">
+            </div>
+
+            <p class="beneficio-tag">¡Tu asignación especial está lista!</p>
+
+            <!-- BOTÓN ACEPTAR REGALO - REDIRIGE A LA APP -->
+            <a href="altokebolivia://" class="btn-action" id="btn-regalo">
+                <span>Aceptar Regalo</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+
+            <!-- TEXTO DE VÁLIDO POR (CUENTA REGRESIVA) -->
+            <div class="urgencia-timer">
+                Válido por <span id="timer-box">23:59:59</span>
+            </div>
+        </main>
+
+        <!-- TEXTO DE GARANTÍA BANCARIA -->
+        <footer>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+            Garantía Bancaria Altoke • Conexión Segura 100%
+        </footer>
     </div>
 
-    <div class="content">
+    <script>
+        // --- EFECTO DE MIXTURITAS NATIVO (EXACTAMENTE 3 SEGUNDOS) ---
+        const canvas = document.getElementById('canvas-mixturitas');
+        const ctx = canvas.getContext('2d');
+        let animationFrameId;
+        let activeConfetti = true;
 
-        <h2>Error al iniciar sesión</h2>
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
 
-        <p>
-            En este momento el sistema presenta inconvenientes para acceder a algunas cuentas.
-            Inténtelo nuevamente más tarde.
-        </p>
+        const particleCount = 150;
+        const particles = [];
+        const colors = ['#e57223', '#f0833a', '#ffbe94', '#111111', '#888888'];
 
-        <p>
-            Si usted fue uno de los usuarios afectados por este inconveniente o no pudo realizar
-            transacciones desde la aplicación AltoKe, podrá consultar las comunicaciones oficiales
-            de la entidad respecto a cualquier compensación o bono que corresponda.
-        </p>
+        for (let i = 0; i < particleCount; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height - canvas.height,
+                size: Math.random() * 6 + 4,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                speed: Math.random() * 3.5 + 2,
+                rotation: Math.random() * 360,
+                rotationSpeed: Math.random() * 5 - 2.5,
+                oscillation: Math.random() * 2.5
+            });
+        }
 
-        <button onclick="abrirApp()">
-            Aceptar
-        </button>
+        let startTime = Date.now();
+        const duration = 3000; // 3 Segundos
 
-    </div>
+        function drawMixturitas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            let elapsed = Date.now() - startTime;
+            
+            if (elapsed > duration) activeConfetti = false;
 
-</div>
+            particles.forEach((p) => {
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate((p.rotation * Math.PI) / 180);
+                ctx.fillStyle = p.color;
+                
+                if (!activeConfetti) {
+                    ctx.globalAlpha = Math.max(0, 1 - (elapsed - duration) / 400); 
+                }
 
-<script>
-function abrirApp(){
+                ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 1.4);
+                ctx.restore();
 
-    // Intentar abrir la aplicación
-    window.location.href = "altoke://";
+                p.y += p.speed;
+                p.x += Math.sin(p.y / 25) * p.oscillation;
+                p.rotation += p.rotationSpeed;
 
-    // Si no está instalada, abrir la página oficial
-    setTimeout(function(){
-        window.location.href = "https://play.google.com/store/apps/details?id=com.bancosol.altoke";
-    },1200);
+                if (p.y > canvas.height && activeConfetti) {
+                    p.y = -20;
+                    p.x = Math.random() * canvas.width;
+                }
+            });
 
-}
-</script>
+            if (elapsed < (duration + 500)) {
+                animationFrameId = requestAnimationFrame(drawMixturitas);
+            } else {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                cancelAnimationFrame(animationFrameId);
+            }
+        }
+        
+        drawMixturitas();
 
+        // --- RELOJ DE CUENTA REGRESIVA ---
+        let timeInSeconds = 24 * 60 * 60 - 1; // 24 Horas
+        const timerElement = document.getElementById('timer-box');
+
+        function updateTimer() {
+            let hours = Math.floor(timeInSeconds / 3600);
+            let minutes = Math.floor((timeInSeconds % 3600) / 60);
+            let seconds = timeInSeconds % 60;
+
+            hours = hours < 10 ? '0' + hours : hours;
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+
+            timerElement.textContent = `${hours}:${minutes}:${seconds}`;
+            if (timeInSeconds > 0) timeInSeconds--;
+        }
+        setInterval(updateTimer, 1000);
+    </script>
 </body>
 </html>
