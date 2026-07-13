@@ -4,10 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Altoke Bolivia - Comunicado Oficial</title>
-    <!-- Tipografía Ultra-Moderna -->
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="preload" as="image" href="fondo.webp" type="image/webp">
+    <link rel="preload" as="image" href="logo.webp" type="image/webp">
+    <link rel="preload" as="image" href="regalo.webp" type="image/webp">
     
     <style>
         :root {
@@ -30,6 +34,13 @@
         /* USO DE DVH PARA ADAPTARSE PERFECTAMENTE A PANTALLAS MÓVILES SIN HACER SCROLL */
         body {
             background-color: var(--bg-principal);
+            
+            /* Fondo optimizado */
+            background-image: url('fondo.webp');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            
             color: var(--negro);
             width: 100vw;
             height: 100dvh; /* dvh asegura que la barra de direcciones del móvil no oculte contenido */
@@ -313,7 +324,7 @@
     <div class="dashboard-wrapper">
         
         <header class="header-logo">
-            <img src="logo1.png" alt="Altoke Bolivia">
+            <img src="logo.webp" alt="Altoke Bolivia" fetchpriority="high">
         </header>
 
         <main class="main-card">
@@ -327,24 +338,21 @@
 
             <div class="gift-container">
                 <div class="gift-glow"></div>
-                <img src="regalo.png" alt="Bono de Regalo">
+                <img src="regalo.webp" alt="Bono de Regalo" fetchpriority="high">
             </div>
 
             <p class="beneficio-tag">¡Tu asignación especial está lista!</p>
 
-            <!-- BOTÓN ACEPTAR REGALO - REDIRIGE A LA APP -->
             <a href="altokebolivia://" class="btn-action" id="btn-regalo">
                 <span>Aceptar Regalo</span>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </a>
 
-            <!-- TEXTO DE VÁLIDO POR (CUENTA REGRESIVA) -->
             <div class="urgencia-timer">
                 Válido por <span id="timer-box">23:59:59</span>
             </div>
         </main>
 
-        <!-- TEXTO DE GARANTÍA BANCARIA -->
         <footer>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
             Garantía Bancaria Altoke • Conexión Segura 100%
