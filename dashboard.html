@@ -3,314 +3,430 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Altoke Bolivia - Comunicado Oficial</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <link rel="preload" as="image" href="fondo.webp" type="image/webp">
-    <link rel="preload" as="image" href="logo.webp" type="image/webp">
-    <link rel="preload" as="image" href="regalo.webp" type="image/webp">
-    
+    <title>Billetera Móvil</title>
     <style>
         :root {
-            --bg-principal: #ffffff;
-            --bg-tarjeta: #fcfcfc;
-            --naranja-altoke: #e57223;
-            --naranja-hover: #c95d18;
-            --negro: #111111;
-            --gris-texto: #4a4a4a;
-            --borde-glow: rgba(229, 114, 35, 0.25);
+            --primary-orange: #ed6c02;
+            --primary-orange-light: #fef1e6;
+            --bg-color: #f8f9fa;
+            --text-dark: #333333;
+            --text-gray: #888888;
+            --white: #ffffff;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 15px rgba(0,0,0,0.06);
+            --border-radius-lg: 20px;
+            --border-radius-md: 12px;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
         }
 
-        /* USO DE DVH PARA ADAPTARSE PERFECTAMENTE A PANTALLAS MÓVILES SIN HACER SCROLL */
         body {
-            background-color: var(--bg-principal);
-            
-            /* Fondo optimizado */
-            background-image: url('fondo.webp');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            
-            color: var(--negro);
-            width: 100vw;
-            height: 100dvh; /* dvh asegura que la barra de direcciones del móvil no oculte contenido */
+            background-color: #e0e0e0;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden; /* Prohíbe estrictamente el scroll */
+            min-height: 100vh;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 414px;
+            height: 100vh;
+            max-height: 896px;
+            background-color: var(--bg-color);
             position: relative;
-        }
-
-        /* Elementos decorativos de fondo */
-        body::before {
-            content: '';
-            position: absolute;
-            width: 450px;
-            height: 450px;
-            background: radial-gradient(circle, rgba(229, 114, 35, 0.12) 0%, rgba(255,255,255,0) 70%);
-            top: -100px;
-            left: -100px;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        body::after {
-            content: '';
-            position: absolute;
-            width: 450px;
-            height: 450px;
-            background: radial-gradient(circle, rgba(229, 114, 35, 0.08) 0%, rgba(255,255,255,0) 70%);
-            bottom: -100px;
-            right: -100px;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        .bg-lines {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: linear-gradient(rgba(229, 114, 35, 0.03) 1px, transparent 1px),
-                              linear-gradient(90deg, rgba(229, 114, 35, 0.03) 1px, transparent 1px);
-            background-size: 40px 40px;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        #canvas-mixturitas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 999;
-        }
-
-        /* Ajuste dinámico del contenedor para que OCUPE EXACTO EL ESPACIO */
-        .dashboard-wrapper {
-            width: 100%;
-            max-width: 440px;
-            height: 100dvh;
-            padding: clamp(10px, 2.5vh, 20px) 16px;
-            z-index: 10;
+            overflow-y: auto;
+            overflow-x: hidden;
             display: flex;
             flex-direction: column;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        /* Header */
+        header {
+            display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 24px 20px 16px;
+            background-color: var(--bg-color);
         }
 
-        .header-logo {
-            width: 100%;
+        .menu-btn, .sync-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
             display: flex;
+            align-items: center;
             justify-content: center;
-            flex-shrink: 0;
         }
 
-        .header-logo img {
-            max-height: clamp(35px, 6vh, 50px); /* Escala dinámicamente según la altura */
-            object-fit: contain;
-            filter: drop-shadow(0px 4px 8px rgba(229, 114, 35, 0.15));
-        }
-
-        /* Tarjeta Principal Dinámica - Usa flex-grow y space-evenly para que los elementos respiren sin desbordar */
-        .main-card {
-            background: rgba(255, 255, 255, 0.95);
-            width: 100%;
-            flex-grow: 1;
-            margin: clamp(10px, 2vh, 20px) 0;
-            padding: clamp(15px, 3vh, 25px) 20px;
-            border-radius: 40px 10px 40px 10px;
-            border: 2px solid var(--naranja-altoke);
-            box-shadow: 0 20px 40px rgba(229, 114, 35, 0.08),
-                        0 0 0 6px rgba(229, 114, 35, 0.03);
-            text-align: center;
-            position: relative;
-            backdrop-filter: blur(20px);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-evenly; /* Reparte el espacio para NUNCA requerir scroll */
-            align-items: center;
-        }
-
-        .main-card::before {
-            content: '';
-            position: absolute;
-            top: 10px; left: 10px; right: 10px; bottom: 10px;
-            border: 1px dashed rgba(229, 114, 35, 0.25);
-            border-radius: 30px 6px 30px 6px;
-            pointer-events: none;
-        }
-
-        .status-badge {
-            background: rgba(229, 114, 35, 0.08);
-            border: 1px solid var(--naranja-altoke);
-            color: var(--naranja-altoke);
-            padding: 4px 12px;
-            border-radius: 100px;
-            font-size: clamp(0.65rem, 1.5vh, 0.75rem);
-            font-weight: 700;
-            letter-spacing: 0.8px;
-            text-transform: uppercase;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .status-badge::before {
-            content: '';
-            width: 6px;
-            height: 6px;
-            background-color: var(--naranja-altoke);
-            border-radius: 50%;
-            box-shadow: 0 0 6px var(--naranja-altoke);
-        }
-
-        h1 {
-            font-size: clamp(1.3rem, 3.5vh, 1.7rem);
-            font-weight: 800;
-            line-height: 1.1;
-            color: var(--negro);
-            margin: 0;
-        }
-        
-        h1 span {
-            color: var(--naranja-altoke);
-        }
-
-        .comunicado-texto {
-            font-size: clamp(0.8rem, 2vh, 0.9rem);
-            color: var(--gris-texto);
-            line-height: 1.4;
-            font-weight: 400;
-            padding: 0 5px;
-            margin: 0;
-        }
-
-        .comunicado-texto strong {
-            color: var(--negro);
+        .greeting {
+            color: var(--primary-orange);
+            font-size: 22px;
             font-weight: 600;
         }
 
-        /* Regalo - Tamaño totalmente adaptable a la pantalla */
-        .gift-container {
-            position: relative;
-            width: clamp(80px, 16vh, 130px);
-            height: clamp(80px, 16vh, 130px);
+        /* Main Content */
+        main {
+            flex: 1;
+            padding: 0 20px 100px;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 0;
+            flex-direction: column;
+            gap: 20px;
         }
 
-        .gift-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            animation: float 3s ease-in-out infinite;
-            filter: drop-shadow(0 10px 20px rgba(229, 114, 35, 0.25));
+        /* Account Card */
+        .account-card {
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            padding: 24px 20px;
+            text-align: center;
+            box-shadow: var(--shadow-md);
         }
 
-        .gift-glow {
-            position: absolute;
-            width: 70%;
-            height: 70%;
-            background: var(--naranja-altoke);
-            border-radius: 50%;
-            filter: blur(30px);
-            opacity: 0.2;
-            z-index: -1;
+        .account-number {
+            color: var(--text-gray);
+            font-size: 14px;
+            margin-bottom: 8px;
         }
 
-        .beneficio-tag {
-            color: var(--naranja-altoke);
-            font-weight: 700;
-            font-size: clamp(0.85rem, 2.2vh, 0.95rem);
-            letter-spacing: -0.2px;
-            margin: 0;
-        }
-
-        /* BOTÓN DE ACCIÓN SIEMPRE VISIBLE */
-        .btn-action {
-            background: linear-gradient(135deg, var(--naranja-altoke) 0%, #f0833a 100%);
-            color: #ffffff;
-            border: none;
-            padding: clamp(12px, 2.5vh, 16px) 30px;
-            font-size: clamp(0.9rem, 2.2vh, 1.05rem);
-            font-weight: 700;
-            border-radius: 14px 4px 14px 4px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-flex;
+        .balance-container {
+            display: flex;
             justify-content: center;
             align-items: center;
             gap: 10px;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 20px rgba(229, 114, 35, 0.35);
-            width: 100%;
-            max-width: 320px;
-            z-index: 20;
         }
 
-        .btn-action:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 25px rgba(229, 114, 35, 0.45);
-            background: linear-gradient(135deg, #f0833a 0%, var(--naranja-altoke) 100%);
+        .balance {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-dark);
         }
 
-        /* Temporizador justo debajo del botón */
-        .urgencia-timer {
-            font-size: clamp(0.7rem, 1.8vh, 0.8rem);
-            color: #666666;
+        .balance span {
             font-weight: 600;
-            background: #fdfdfd;
-            padding: 6px 16px;
-            border-radius: 20px;
-            border: 1px solid #f0f0f0;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
-            margin: 0;
         }
 
-        .urgencia-timer span {
-            color: var(--naranja-altoke);
-            font-weight: 800;
-            font-size: 1.05em;
+        .eye-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
         }
 
-        /* Footer con la Garantía Bancaria */
-        footer {
-            font-size: clamp(0.65rem, 1.6vh, 0.75rem);
-            color: #777777;
-            text-align: center;
-            letter-spacing: 0.2px;
-            font-weight: 600;
+        /* Primary Actions */
+        .primary-actions {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .action-btn-main {
+            background-color: var(--primary-orange);
+            color: var(--white);
+            border-radius: var(--border-radius-md);
+            padding: 20px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 15px;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Secondary Actions */
+        .secondary-actions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            padding: 5px 0;
+        }
+
+        .action-btn-sec {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .action-btn-sec .icon-container {
+            background-color: var(--white);
+            width: 60px;
+            height: 60px;
+            border-radius: var(--border-radius-md);
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .action-btn-sec span {
+            color: var(--text-dark);
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* Recent Transactions */
+        .transactions-card {
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            padding: 20px;
+            box-shadow: var(--shadow-md);
+            min-height: 180px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .transactions-card h3 {
+            color: var(--primary-orange);
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .empty-state {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-gray);
+            font-size: 15px;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: var(--white);
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 10px 25px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             gap: 6px;
-            flex-shrink: 0;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-dark);
         }
 
-        footer svg {
-            color: var(--naranja-altoke);
-            width: clamp(12px, 2vh, 14px);
-            height: clamp(12px, 2vh, 14px);
+        .nav-item span {
+            font-size: 12px;
+            font-weight: 500;
         }
 
-        @keyframes float {
-            0% { transform: translateY(0px) rotate(0deg); }
+        .nav-item.active {
+            color: var(--primary-orange);
+        }
+
+        .nav-item.active .icon-bg {
+            background-color: var(--primary-orange-light);
+            padding: 8px 16px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-item:not(.active) .icon-bg {
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <!-- Header -->
+    <header>
+        <button class="menu-btn">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--primary-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="18" x2="16" y2="18"></line>
+            </svg>
+        </button>
+        <div class="greeting">Hola</div>
+        <button class="sync-btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary-orange)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                <path d="M3 3v5h5"></path>
+                <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"></path>
+                <path d="M16 21v-5h5"></path>
+            </svg>
+        </button>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Account Card -->
+        <section class="account-card">
+            <div class="account-number">Cuenta: 1617955-000-009</div>
+            <div class="balance-container">
+                <div class="balance">Bs <span>1,000.00</span></div>
+                <button class="eye-btn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                </button>
+            </div>
+        </section>
+
+        <!-- Primary Actions -->
+        <section class="primary-actions">
+            <button class="action-btn-main">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="7" height="7" rx="1"></rect>
+                    <rect x="14" y="3" width="7" height="7" rx="1"></rect>
+                    <rect x="14" y="14" width="7" height="7" rx="1"></rect>
+                    <path d="M3 14h3v3H3z"></path>
+                    <path d="M8 14h2v2H8z"></path>
+                    <path d="M3 19h2v2H3z"></path>
+                    <path d="M8 19h2v2H8z"></path>
+                </svg>
+                Cobro
+            </button>
+            <button class="action-btn-main">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9V5a2 2 0 0 1 2-2h4"></path>
+                    <path d="M15 3h4a2 2 0 0 1 2 2v4"></path>
+                    <path d="M21 15v4a2 2 0 0 1-2 2h-4"></path>
+                    <path d="M9 21H5a2 2 0 0 1-2-2v-4"></path>
+                </svg>
+                Pago
+            </button>
+            <button class="action-btn-main">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"></path>
+                    <path d="M4 6v12c0 1.1.9 2 2 2h14v-4"></path>
+                    <rect x="16" y="12" width="6" height="4" rx="1"></rect>
+                </svg>
+                Retiro
+            </button>
+        </section>
+
+        <!-- Secondary Actions -->
+        <section class="secondary-actions">
+            <button class="action-btn-sec">
+                <div class="icon-container">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary-orange)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="7" y="2" width="14" height="20" rx="2"></rect>
+                        <path d="M3 6h2"></path>
+                        <path d="M3 10h2"></path>
+                        <path d="M3 14h2"></path>
+                        <path d="M14 18h.01"></path>
+                    </svg>
+                </div>
+                <span>Recarga</span>
+            </button>
+            <button class="action-btn-sec">
+                <div class="icon-container">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary-orange)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 18h6"></path>
+                        <path d="M10 22h4"></path>
+                        <path d="M12 2v1"></path>
+                        <path d="M12 5a5 5 0 0 0-5 5c0 2 1.5 3 2 5h6c.5-2 2-3 2-5a5 5 0 0 0-5-5z"></path>
+                    </svg>
+                </div>
+                <span>Servicios</span>
+            </button>
+            <button class="action-btn-sec">
+                <div class="icon-container">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary-orange)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 10l4-4-4-4"></path>
+                        <path d="M21 6H3"></path>
+                        <path d="M7 14l-4 4 4 4"></path>
+                        <path d="M3 18h18"></path>
+                    </svg>
+                </div>
+                <span>Transferir</span>
+            </button>
+            <button class="action-btn-sec">
+                <div class="icon-container">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary-orange)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                    </svg>
+                </div>
+                <span>Ayuda</span>
+            </button>
+        </section>
+
+        <!-- Transactions -->
+        <section class="transactions-card">
+            <h3>Últimos movimientos</h3>
+            <div class="empty-state">
+                Aún no tiene movimientos
+            </div>
+        </section>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <button class="nav-item active">
+            <div class="icon-bg">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+            </div>
+            <span>Inicio</span>
+        </button>
+        <button class="nav-item">
+            <div class="icon-bg">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="8" y1="6" x2="21" y2="6"></line>
+                    <line x1="8" y1="12" x2="21" y2="12"></line>
+                    <line x1="8" y1="18" x2="21" y2="18"></line>
+                    <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                    <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                    <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                </svg>
+            </div>
+            <span>Movimientos</span>
+        </button>
+        <button class="nav-item">
+            <div class="icon-bg">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="7" height="7" rx="1"></rect>
+                    <rect x="14" y="3" width="7" height="7" rx="1"></rect>
+                    <rect x="14" y="14" width="7" height="7" rx="1"></rect>
+                    <rect x="3" y="14" width="7" height="7" rx="1"></rect>
+                </svg>
+            </div>
+            <span>Más</span>
+        </button>
+    </nav>
+</div>
+
+</body>
+</html>
+m: translateY(0px) rotate(0deg); }
             50% { transform: translateY(-8px) rotate(1.5deg); }
             100% { transform: translateY(0px) rotate(0deg); }
         }
